@@ -12,12 +12,18 @@ function CRON_APP() {
 
     let cron_arr_set = Object.assign([], cron_arr); //Основной массив для хранения CRON-строки (ОМХ)
 
+        cron_arr_set[0] = min;
+        cron_arr_set[1] = hour;
+        cron_arr_set[2] = day;
+        cron_arr_set[3] = month;
+        cron_arr_set[4] = week;
+
    return (
     <div className="CronApp">
         <h1>Редактор CRON-раписания</h1>
         <h3>Минутный символ</h3>
         <input
-            defaultValue={min} 
+            value={min} 
             type="text"
         />
         <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
@@ -27,7 +33,7 @@ function CRON_APP() {
         />
         <h3>Часовой символ</h3>
         <input
-            defaultValue={hour} 
+            value={hour} 
             type="text"
         />
         <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
@@ -37,7 +43,7 @@ function CRON_APP() {
         />
         <h3>Дневной символ</h3>
         <input
-            defaultValue={day} 
+            value={day} 
             type="text"
         />
         <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
@@ -47,7 +53,7 @@ function CRON_APP() {
         />
         <h3>Месячный символ</h3>
         <input
-            defaultValue={month} 
+            value={month} 
             type="text"
         />
         <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
@@ -57,7 +63,7 @@ function CRON_APP() {
         />
         <h3>Недельный символ</h3>
         <input
-            defaultValue={week} 
+            value={week} 
             type="text"
         />
         <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
@@ -69,9 +75,9 @@ function CRON_APP() {
         <input //Инпут конечного вывода строки CRON
             id="cron_main"
             type="text"
-            defaultValue={cron_arr_set.join(" ")}
+            value={cron_arr_set.join(" ")}
          />
-         <button type="button">SAVE</button> {/*Занесение введённых данных в ОМХ*/}
+         <button type="button" onClick={() => setCron(cron_arr_set)}>SAVE</button> {/*Занесение введённых данных в ОМХ*/}
     </div> 
    ) 
 }
