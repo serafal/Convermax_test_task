@@ -9,22 +9,22 @@ function CRON_APP() {
     const [week, setWeek] = useState ("*") //Передача состояния недельного символа
 
     const [cron_arr, setCron] = useState(["*","*","*","*","*"]); //Начальный массив хранения CRON-строки 
-
     let cron_arr_set = Object.assign([], cron_arr); //Основной массив для хранения CRON-строки (ОМХ)
 
-
-    function save_button() {
+    function save_button() { //Функция кнопки SAVE для занесения данных в строку CRON. ЗДЕСЬ ВСЁ ХОРОШО.
 
         cron_arr_set[0] = min;
         cron_arr_set[1] = hour;
         cron_arr_set[2] = day;
         cron_arr_set[3] = month;
         cron_arr_set[4] = week;
-        
         setCron(cron_arr_set);
     }
-    
 
+    function test_function() { //ТЕСТ-функция (для релиза - УДАЛИТЬ)
+        setMin(10);
+    }
+    
    return (
     <div className="CronApp">
         <h1>Редактор CRON-раписания</h1>
@@ -43,7 +43,7 @@ function CRON_APP() {
             value={hour} 
             type="text"
         />
-        <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
+        <input      //Ввод часового символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
             id="hour"
             type="text"
             onChange={event => setHour(event.target.value)}
@@ -53,7 +53,7 @@ function CRON_APP() {
             value={day} 
             type="text"
         />
-        <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
+        <input      //Ввод дневного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
             id="day"
             type="text"
             onChange={event => setDay(event.target.value)}
@@ -63,7 +63,7 @@ function CRON_APP() {
             value={month} 
             type="text"
         />
-        <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
+        <input      //Ввод месячного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
             id="month"
             type="text"
             onChange={event => setMonth(event.target.value)}
@@ -73,7 +73,7 @@ function CRON_APP() {
             value={week} 
             type="text"
         />
-        <input      //Ввод минутного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
+        <input      //Ввод недельного символа (ДАЛЕЕ РЕАЛИЗОВАТЬ ЧЕРЕЗ НАСТРОЙКУ)
             id="week"
             type="text"
             onChange={event => setWeek(event.target.value)}
@@ -85,6 +85,8 @@ function CRON_APP() {
             value={cron_arr_set.join(" ")}
          />
          <button type="button" onClick={() => save_button()}>SAVE</button> {/*Занесение введённых данных в ОМХ*/}
+
+         <button type="button" onClick={() => test_function()}>TEST</button> {/*Кнопка для тестирования различных моментов (ДЛЯ РЕЛИЗА - УДАЛИТЬ) */}
     </div> 
    ) 
 }
