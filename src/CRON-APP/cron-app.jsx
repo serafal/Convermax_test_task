@@ -12,11 +12,18 @@ function CRON_APP() {
 
     let cron_arr_set = Object.assign([], cron_arr); //Основной массив для хранения CRON-строки (ОМХ)
 
+
+    function save_button() {
+
         cron_arr_set[0] = min;
         cron_arr_set[1] = hour;
         cron_arr_set[2] = day;
         cron_arr_set[3] = month;
         cron_arr_set[4] = week;
+        
+        setCron(cron_arr_set);
+    }
+    
 
    return (
     <div className="CronApp">
@@ -77,7 +84,7 @@ function CRON_APP() {
             type="text"
             value={cron_arr_set.join(" ")}
          />
-         <button type="button" onClick={() => setCron(cron_arr_set)}>SAVE</button> {/*Занесение введённых данных в ОМХ*/}
+         <button type="button" onClick={() => save_button()}>SAVE</button> {/*Занесение введённых данных в ОМХ*/}
     </div> 
    ) 
 }
