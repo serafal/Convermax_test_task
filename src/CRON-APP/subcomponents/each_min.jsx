@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
 
-function EachMin({selected, onChange}) {
+function EachMin({selected, onMinChange, onChange}) {
 //Данный компонент отвечает за выдачу CRON-значений соответствующих запросу "Каждую X минуту."
 // X * * * *
   const handleChange = (event) => {
-    onChange(event.target.value) 
+    onMinChange(event.target.value) 
   }
 
   const keyDownDisabled = (event) => {//Отключаем ручной ввод в input
@@ -16,7 +16,7 @@ function EachMin({selected, onChange}) {
     return (
       <div>
         <form>
-        <h1>Задача будет запускаться каждые
+        <h1>Задача будет запускаться периодически, через каждое указанное количество минут:</h1>
           <input
           min = {1}
           max = {59}
@@ -24,7 +24,6 @@ function EachMin({selected, onChange}) {
          onChange = {handleChange}
          onKeyDown = {keyDownDisabled}
           />
-           минут.</h1> 
         </form>
       </div>
   );  

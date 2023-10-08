@@ -1,11 +1,11 @@
 import {useState } from "react";
-import MinSelect from "./subcomponents/each_min";
+import EachMin from "./subcomponents/each_min";
 import DaySelect from "./subcomponents/each_day";
-import HourSelect from "./subcomponents/exact_day_week";
+import ExactDaysWeek from "./subcomponents/exact_day_week";
 import MonthSelect from "./subcomponents/twice_day";
 import WeekSelect from "./subcomponents/exact_day_month";
 import CustomSelect from "./subcomponents/custom-select";
-import EachMin from "./subcomponents/each_min";
+
 
 function CRON_APP(props) {
     
@@ -32,7 +32,7 @@ function CRON_APP(props) {
     function save_button() { //Функция кнопки SAVE для занесения данных в строку CRON.
         
         let CM = document.forms.cron_mode.cron_mode.value;
-            if (CM === "each_min") {
+            if (CM === "each_min") { //ВЫБРАНА НАСТРОЙКА "КАЖДЫЕ X МИНУТ"
                 if (min === "*") { //Проверка на не введённое значение
                     return alert ("Пожалуйста, введите желаемое значение")
                 }
@@ -43,8 +43,8 @@ function CRON_APP(props) {
                 cron_arr_set[4] = "*";  
             }
             if (CM === "exact_days_week_in_time") {
-                cron_arr_set[0] = 0;
-                cron_arr_set[1] = 0;
+                cron_arr_set[0] = min;
+                cron_arr_set[1] = day;
                 cron_arr_set[2] = "*";
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = week;  
@@ -101,8 +101,12 @@ function CRON_APP(props) {
             <input type="radio" name="cron_mode" value="custom" onClick = {() => setSelComp("custom")}/>Пользовательская настройка</p>
             </form>
         </div>
-        <EachMin selected = {selComp} onChange={handleMinChange}/>
-        <HourSelect selected = {selComp} onChange={handleHourChange}/>
+        <EachMin selected = {selComp} 
+                 onMinChange={handleMinChange}/>
+        <ExactDaysWeek  selected = {selComp} 
+                        onMinChange={handleMinChange}               
+                        onHourChange = {handleHourChange}
+                        onWeekChange = {handleWeekChange}/>
         <DaySelect selected = {selComp} onChange={handleDayChange}/>
         <MonthSelect selected = {selComp} onChange={handleMonthChange}/>
         <WeekSelect selected = {selComp} onChange={handleWeekChange}/>
