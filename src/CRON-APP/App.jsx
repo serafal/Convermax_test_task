@@ -2,7 +2,7 @@ import {useState } from "react";
 import EachMin from "./subcomponents/each_min";
 import EachDay from "./subcomponents/each_day";
 import ExactDaysWeek from "./subcomponents/exact_day_week";
-import MonthSelect from "./subcomponents/twice_day";
+import TwiceDay from "./subcomponents/twice_day";
 import WeekSelect from "./subcomponents/exact_day_month";
 import CustomSelect from "./subcomponents/custom-select";
 
@@ -32,7 +32,6 @@ function CRON_APP(props) {
     function save_button() { //Функция кнопки SAVE для занесения данных в строку CRON.
         //В этой функции осуществляется парсинг собранных значений в формат CRON.
         let CM = document.forms.cron_mode.cron_mode.value;
-        console.log(week)
             if (CM === "each_min") { //ВЫБРАНА НАСТРОЙКА "КАЖДЫЕ X МИНУТ"
                 if (min === "*") { //Проверка на не введённое значение
                     return alert ("Пожалуйста, введите желаемое значение")
@@ -53,16 +52,34 @@ function CRON_APP(props) {
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = week;  
             }
-            if (CM === "each_day") {
+            if (CM === "each_day") {  //ВЫБРАНА НАСТРОЙКА "КАЖДЫЙ ДЕНЬ В УКАЗАННЫЙ ЧАС"
+                if (hour === "*") { //Проверка на не введённое значение
+                    return alert ("Пожалуйста, введите желаемое значение")
+                }
                 cron_arr_set[0] = "0";
                 cron_arr_set[1] = hour;
                 cron_arr_set[2] = "*";
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
             }
-            if (CM === "twice_day") {
-                cron_arr_set[0] = min + "/";
-                cron_arr_set[1] = "*";
+            if (CM === "twice_day") { //ВЫБРАНА НАСТРОЙКА "ДВАЖДЫ В ДЕНЬ В УКАЗАННЫЕ ЧАСЫ"
+                let hour_arr = hour.split(",")
+                setHour(hour_arr.join(","))
+                console.log(hour_arr, hour)
+                if (hour === "*") { //Проверка на не введённое значение
+                    return alert ("Пожалуйста, введите желаемые значения")
+                }
+                if (hour_arr[0] === "" || hour_arr[1] === "") {
+                    return alert ("Пожалуйста, введите желаемое значение")
+                }
+                if (Number(hour_arr[0]) > Number(hour_arr[1])) {
+                    return alert ("Недопустимые вводные данные. Второй запуск должен быть после первого")
+                }
+                if (Number(hour_arr[0]) === Number(hour_arr[1])) {
+                    return alert ("Недопустимые вводные данные. Второй и первый запуск не могут быть даны одновременно")
+                } 
+                cron_arr_set[0] = "0";
+                cron_arr_set[1] = hour;
                 cron_arr_set[2] = "*";
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
@@ -113,7 +130,8 @@ function CRON_APP(props) {
                         onWeekChange = {handleWeekChange}/>
         <EachDay        selected = {selComp} 
                         onHourChange={handleHourChange}/>
-        <MonthSelect selected = {selComp} onChange={handleMonthChange}/>
+        <TwiceDay       selected = {selComp}
+                        onHourChange={handleHourChange}/>
         <WeekSelect selected = {selComp} onChange={handleWeekChange}/>
         <CustomSelect selected={selComp}/>
         <h2>CRON-строка</h2>
