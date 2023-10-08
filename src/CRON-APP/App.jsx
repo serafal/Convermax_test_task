@@ -56,7 +56,7 @@ function CRON_APP(props) {
             if (CM === "each_day") {
                 cron_arr_set[0] = "0";
                 cron_arr_set[1] = hour;
-                cron_arr_set[2] = "*/" + 1;
+                cron_arr_set[2] = "*";
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
             }
