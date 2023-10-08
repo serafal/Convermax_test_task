@@ -30,21 +30,25 @@ function CRON_APP(props) {
     const [selComp, setSelComp] = useState ("minComp") //Выбранный компонент для ввода настроек
 
     function save_button() { //Функция кнопки SAVE для занесения данных в строку CRON.
-        
+        //В этой функции осуществляется парсинг собранных значений в формат CRON.
         let CM = document.forms.cron_mode.cron_mode.value;
+        console.log(week)
             if (CM === "each_min") { //ВЫБРАНА НАСТРОЙКА "КАЖДЫЕ X МИНУТ"
                 if (min === "*") { //Проверка на не введённое значение
                     return alert ("Пожалуйста, введите желаемое значение")
                 }
-                cron_arr_set[0] = min + "/";
+                cron_arr_set[0] = "*/" + min;
                 cron_arr_set[1] = "*";
                 cron_arr_set[2] = "*";
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
             }
-            if (CM === "exact_days_week_in_time") {
+            if (CM === "exact_days_week_in_time") { //ВЫБРАНА НАСТРОЙКА "В ОПРЕДЕЛЁННОЕ ВРЕМЯ В УКАЗАНЫЕ ДНИ"
+                if (min === "*" || hour === "*" || week === ("*") ) { //Проверка на не введённое значение
+                    return alert ("Пожалуйста, введите желаемое значение")
+                }
                 cron_arr_set[0] = min;
-                cron_arr_set[1] = day;
+                cron_arr_set[1] = hour;
                 cron_arr_set[2] = "*";
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = week;  
@@ -78,7 +82,7 @@ function CRON_APP(props) {
                 cron_arr_set[4] = "*";  
             }
         setCron(cron_arr_set);
-        console.log(CM)
+        
     }
 
     const test_function = () => { //ТЕСТ-функция (для релиза - УДАЛИТЬ)

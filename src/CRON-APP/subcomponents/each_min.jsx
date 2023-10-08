@@ -1,9 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
 
 function EachMin({selected, onMinChange, onChange}) {
 //Данный компонент отвечает за выдачу CRON-значений соответствующих запросу "Каждую X минуту."
-// X * * * *
+// X/ * * * *
   const handleChange = (event) => {
     onMinChange(event.target.value) 
   }
