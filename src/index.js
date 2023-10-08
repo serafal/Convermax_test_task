@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import CRON_APP from './CRON-APP/cron-app';
+import CRON_APP from './CRON-APP/App';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
