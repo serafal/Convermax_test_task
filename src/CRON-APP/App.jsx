@@ -1,6 +1,6 @@
 import {useState } from "react";
 import EachMin from "./subcomponents/each_min";
-import DaySelect from "./subcomponents/each_day";
+import EachDay from "./subcomponents/each_day";
 import ExactDaysWeek from "./subcomponents/exact_day_week";
 import MonthSelect from "./subcomponents/twice_day";
 import WeekSelect from "./subcomponents/exact_day_month";
@@ -55,8 +55,8 @@ function CRON_APP(props) {
             }
             if (CM === "each_day") {
                 cron_arr_set[0] = "0";
-                cron_arr_set[1] = "0";
-                cron_arr_set[2] = 1 + "/";
+                cron_arr_set[1] = hour;
+                cron_arr_set[2] = "*/" + 1;
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
             }
@@ -105,13 +105,14 @@ function CRON_APP(props) {
             <input type="radio" name="cron_mode" value="custom" onClick = {() => setSelComp("custom")}/>Пользовательская настройка</p>
             </form>
         </div>
-        <EachMin selected = {selComp} 
-                 onMinChange={handleMinChange}/>
+        <EachMin        selected = {selComp} 
+                        onMinChange={handleMinChange}/>
         <ExactDaysWeek  selected = {selComp} 
                         onMinChange={handleMinChange}               
                         onHourChange = {handleHourChange}
                         onWeekChange = {handleWeekChange}/>
-        <DaySelect selected = {selComp} onChange={handleDayChange}/>
+        <EachDay        selected = {selComp} 
+                        onHourChange={handleHourChange}/>
         <MonthSelect selected = {selComp} onChange={handleMonthChange}/>
         <WeekSelect selected = {selComp} onChange={handleWeekChange}/>
         <CustomSelect selected={selComp}/>

@@ -1,19 +1,31 @@
 import React from 'react';
-import { useState } from 'react';
 
-function DaySelect({selected, onChange}) {
+function EachDay({selected, onHourChange, onChange}) {
 
-  const handleChange = (event) => {
-    onChange(event.target.value)
+  const handleHourChange = (event) => {
+    onHourChange(event.target.value) 
+  }
+
+  const keyDownDisabled = (event) => {//Отключаем ручной ввод в input
+    event.preventDefault();
   }
 
   if (selected === "each_day") {
     return (
       <div>
-        <h1>each_day <input type="text" onChange = {handleChange}/></h1>  
+        <form>
+        <h1>Задача будет запускаться каждый день, в указанный час</h1>
+          <input
+          min = {0}
+          max = {23}
+         type="number"
+         onChange = {handleHourChange}
+         onKeyDown = {keyDownDisabled}
+          />
+        </form>
       </div>
   );  
   }
 }
-
-export default DaySelect;
+//КОМПОНЕНТ ГОТОВ
+export default EachDay;

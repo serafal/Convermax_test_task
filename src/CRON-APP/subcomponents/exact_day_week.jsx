@@ -3,7 +3,7 @@ import React from 'react';
 function ExactDaysWeek({selected, onChange, onMinChange, onHourChange, onWeekChange, onClick}) {
 
 //Данный компонент отвечает за выдачу CRON-значений соответствующих запросу "Каждый указанный день недели в указанное время"
-// X Y Z1,Z2,Z3...  * *
+// X Y * * Z1,Z2,Z3...
 
 const handleMinChange = (event) => { //Отслеживаем изменения MIN
   onMinChange(event.target.value) 
@@ -60,5 +60,5 @@ if (selected === "exact_days_week_in_time") { //Выбор проходит в A
 );  
 }
 }
-
+//КОМПОНЕНТ ГОТОВ
 export default ExactDaysWeek;
