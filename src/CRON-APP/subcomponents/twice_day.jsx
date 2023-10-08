@@ -8,7 +8,6 @@ function TwiceDay({selected, onChange, onHourChange}) {
     for (let i = 0; i < inputs.length; i++) {
       hour_arr.push(inputs[i].value);
     }
-    console.log(hour_arr.length)
     if (!hour_arr[0] || !hour_arr[1]) { //Если данные не введены
       hour_arr = [];
       hour_arr.push("*"); //Это значение выдаст ошибку на проверке в App
@@ -44,5 +43,5 @@ function TwiceDay({selected, onChange, onHourChange}) {
   );  
   }
 }
-
+//КОМПОНЕНТ ГОТОВ
 export default TwiceDay;

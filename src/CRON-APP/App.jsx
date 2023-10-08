@@ -3,7 +3,7 @@ import EachMin from "./subcomponents/each_min";
 import EachDay from "./subcomponents/each_day";
 import ExactDaysWeek from "./subcomponents/exact_day_week";
 import TwiceDay from "./subcomponents/twice_day";
-import WeekSelect from "./subcomponents/exact_day_month";
+import ExactDayMonth from "./subcomponents/exact_day_month";
 import CustomSelect from "./subcomponents/custom-select";
 
 
@@ -65,7 +65,6 @@ function CRON_APP(props) {
             if (CM === "twice_day") { //ВЫБРАНА НАСТРОЙКА "ДВАЖДЫ В ДЕНЬ В УКАЗАННЫЕ ЧАСЫ"
                 let hour_arr = hour.split(",")
                 setHour(hour_arr.join(","))
-                console.log(hour_arr, hour)
                 if (hour === "*") { //Проверка на не введённое значение
                     return alert ("Пожалуйста, введите желаемые значения")
                 }
@@ -84,19 +83,26 @@ function CRON_APP(props) {
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
             }
-            if (CM === "exact_day_month") {
-                cron_arr_set[0] = min + "/";
-                cron_arr_set[1] = "*";
-                cron_arr_set[2] = "*";
+            if (CM === "exact_day_month") { //ВЫБРАНА НАСТРОЙКА "КАЖДЫЙ УКАЗАННЫЙ ДЕНЬ МЕСЯЦА"
+                if (day > 28) {
+                  let confirmDate = window.confirm("Введённое значение не рекомендуется к использованию, поскольку не в каждом месяце есть такое число. Желаете ввести эту дату? Если да - задача будет запущена в промежутке между 28-ым числом месяца и указанным числом месяца. После подтверждения, нажмите SAVE ещё раз");
+                  if (confirmDate) {
+                    return setDay("28-" + day) 
+                  }
+                  else return  
+                }
+                cron_arr_set[0] = "0";
+                cron_arr_set[1] = "0";
+                cron_arr_set[2] = day;
                 cron_arr_set[3] = "*";
-                cron_arr_set[4] = "*";  
+                cron_arr_set[4] = "*"; 
             }
             if (CM === "custom") {
-                cron_arr_set[0] = min + "/";
-                cron_arr_set[1] = "*";
-                cron_arr_set[2] = "*";
-                cron_arr_set[3] = "*";
-                cron_arr_set[4] = "*";  
+                cron_arr_set[0] = min;
+                cron_arr_set[1] = hour;
+                cron_arr_set[2] = day;
+                cron_arr_set[3] = month;
+                cron_arr_set[4] = week;  
             }
         setCron(cron_arr_set);
         
@@ -132,8 +138,14 @@ function CRON_APP(props) {
                         onHourChange={handleHourChange}/>
         <TwiceDay       selected = {selComp}
                         onHourChange={handleHourChange}/>
-        <WeekSelect selected = {selComp} onChange={handleWeekChange}/>
-        <CustomSelect selected={selComp}/>
+        <ExactDayMonth  selected = {selComp}
+                        onDayChange={handleDayChange}/>
+        <CustomSelect   selected={selComp}
+                        onMinChange={handleMinChange}
+                        onHourChange={handleHourChange}
+                        onDayChange={handleDayChange}
+                        onMonthChange={handleMonthChange}
+                        onWeekChange={handleWeekChange}/>
         <h2>CRON-строка</h2>
         <input //Инпут конечного вывода строки CRON
             id="cron_main"

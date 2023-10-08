@@ -1,19 +1,31 @@
 import React from 'react';
-import { useState } from 'react';
 
-function WeekSelect({selected, onChange}) {
+function ExactDayMonth({selected, onChange, onDayChange}) {
 
-  const handleChange = (event) => {
-    onChange(event.target.value)
+  const handleDayChange = (event) => {
+    onDayChange(event.target.value) 
+  }
+
+  const keyDownDisabled = (event) => {//Отключаем ручной ввод в input
+    event.preventDefault();
   }
 
   if (selected === "exact_day_month") {
     return (
       <div>
-        <h1>exact_day_month <input type="text" onChange = {handleChange}/></h1>  
+        <form>
+        <h1>Задача будет запускаться каждый указанный день месяца</h1>
+          <input
+          min = {1}
+          max = {31}
+         type="number"
+         onChange = {handleDayChange}
+         onKeyDown = {keyDownDisabled}
+          />
+        </form>
       </div>
   );  
   }
 }
 
-export default WeekSelect;
+export default ExactDayMonth;
