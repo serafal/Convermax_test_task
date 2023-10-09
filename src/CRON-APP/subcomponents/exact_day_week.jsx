@@ -34,13 +34,13 @@ if (selected === "exact_days_week_in_time") { //Выбор проходит в A
     <div>
       <form name='week_checkbox'>
       <h1>Задача будет запускаться каждый указанный день недели:</h1> 
-      <input type="checkbox" name = "week_checkbox" value="1" id="1" onClick={handleWeekChange}/>Понедельник <br></br>
-      <input type="checkbox" name = "week_checkbox" value="2" id="2" onClick={handleWeekChange}/>Вторник <br></br>
-      <input type="checkbox" name = "week_checkbox" value="3" id="3" onClick={handleWeekChange}/>Среда <br></br>
-      <input type="checkbox" name = "week_checkbox" value="4" id="4" onClick={handleWeekChange}/>Четверг <br></br>
-      <input type="checkbox" name = "week_checkbox" value="5" id="5" onClick={handleWeekChange}/>Пятница <br></br>
-      <input type="checkbox" name = "week_checkbox" value="6" id="6" onClick={handleWeekChange}/>Суббота <br></br>
-      <input type="checkbox" name = "week_checkbox" value="7" id="7" onClick={handleWeekChange}/>Воскресенье <br></br>
+      <input type="checkbox" name = "week_checkbox" value="1" id="exact_day_week_1" onClick={handleWeekChange}/>Понедельник <br></br>
+      <input type="checkbox" name = "week_checkbox" value="2" id="exact_day_week_2" onClick={handleWeekChange}/>Вторник <br></br>
+      <input type="checkbox" name = "week_checkbox" value="3" id="exact_day_week_3" onClick={handleWeekChange}/>Среда <br></br>
+      <input type="checkbox" name = "week_checkbox" value="4" id="exact_day_week_4" onClick={handleWeekChange}/>Четверг <br></br>
+      <input type="checkbox" name = "week_checkbox" value="5" id="exact_day_week_5" onClick={handleWeekChange}/>Пятница <br></br>
+      <input type="checkbox" name = "week_checkbox" value="6" id="exact_day_week_6" onClick={handleWeekChange}/>Суббота <br></br>
+      <input type="checkbox" name = "week_checkbox" value="7" id="exact_day_week_7" onClick={handleWeekChange}/>Воскресенье <br></br>
       <p>В <input type="number"
         name=""
         id=""

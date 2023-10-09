@@ -16,6 +16,7 @@ function ExactDayMonth({selected, onChange, onDayChange}) {
         <form>
         <h1>Задача будет запускаться каждый указанный день месяца</h1>
           <input
+          id='exact_day_month_day'
           min = {1}
           max = {31}
          type="number"

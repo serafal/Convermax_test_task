@@ -17,6 +17,7 @@ function EachMin({selected, onMinChange, onChange}) {
         <form>
         <h1>Задача будет запускаться периодически, через каждое указанное количество минут:</h1>
           <input
+          id='each_min_min'
           min = {1}
           max = {59}
          type="number"

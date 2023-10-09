@@ -16,6 +16,7 @@ function EachDay({selected, onHourChange, onChange}) {
         <form>
         <h1>Задача будет запускаться каждый день, в указанный час</h1>
           <input
+          id='each_day_hour'
           min = {0}
           max = {23}
          type="number"

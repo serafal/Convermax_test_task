@@ -32,6 +32,7 @@ function CRON_APP(props) {
     function save_button() { //Функция кнопки SAVE для занесения данных в строку CRON.
         //В этой функции осуществляется парсинг собранных значений в формат CRON.
         let CM = document.forms.cron_mode.cron_mode.value;
+        let cron_string = document.getElementById("cron_main");
             if (CM === "each_min") { //ВЫБРАНА НАСТРОЙКА "КАЖДЫЕ X МИНУТ"
                 if (min === "*") { //Проверка на не введённое значение
                     return alert ("Пожалуйста, введите желаемое значение")
@@ -97,7 +98,7 @@ function CRON_APP(props) {
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*"; 
             }
-            if (CM === "custom") {
+            if (CM === "custom") { //ВЫБРАНА НАСТРОЙКА "ПОЛЬЗОВАТЕЛЬСКАЯ НАСТРОЙКА"
                 cron_arr_set[0] = min;
                 cron_arr_set[1] = hour;
                 cron_arr_set[2] = day;
@@ -105,10 +106,35 @@ function CRON_APP(props) {
                 cron_arr_set[4] = week;  
             }
         setCron(cron_arr_set);
-        
+        cron_string.value = cron_arr_set.join(' ')//Вывод данных в CRON-строку
     }
 
-    const test_function = () => { //ТЕСТ-функция (для релиза - УДАЛИТЬ)
+    function load_button() { //Функция кнопки LOAD для чтения ввода CRON
+    //Получаем строку CRON, парсим её в массив по min,hour.... затем смотрим на значения.
+        let cron_input_str = document.getElementById("cron_main").value
+        console.log(cron_input_str)
+        let cron_input_arr = cron_input_str.split(" ")
+        console.log(cron_input_arr)
+        //Проверка на заполненность строки
+        if (cron_input_arr.length !== 5) {
+            return alert ("Введённое значение не является CRON-строкой или не поддерживается в данном редакторе")
+        }
+        //Проверка на наличие неверных символов
+
+        //Разобъём пользовательский ввод
+        document.getElementById("custom").checked = true;
+        setSelComp("custom");
+        const infil_values = () => { //Функция переноса данных в выбранный компонент
+            document.getElementById('custom_min').value = cron_input_arr[0]
+            document.getElementById('custom_hour').value = cron_input_arr[1]
+            document.getElementById('custom_day').value = cron_input_arr[2]
+            document.getElementById('custom_month').value = cron_input_arr[3]
+            document.getElementById('custom_week').value = cron_input_arr[4]
+        }
+        setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
+    }
+
+    const test_function = () => { //ТЕСТ-функция (для релиза - УДАЛИТЬ
         console.log(document.forms.cron_mode.cron_mode.value)   
     }
 
@@ -120,12 +146,12 @@ function CRON_APP(props) {
             <h2>1. Выберите, когда задача должна запускаться:</h2>
             <form name="cron_mode">
             <p>
-            <input type="radio" name="cron_mode" value="each_min" onClick = {() => setSelComp("each_min")}/>Каждые X минут <br></br>
-            <input type="radio" name="cron_mode" value="exact_days_week_in_time" onClick = {() => setSelComp("exact_days_week_in_time")}/>В выбранный день недели<br></br>
-            <input type="radio" name="cron_mode" value="each_day" onClick = {() => setSelComp("each_day")}/>Каждый день<br></br>
-            <input type="radio" name="cron_mode" value="twice_day" onClick = {() => setSelComp("twice_day")}/>Дважды в день<br></br>
-            <input type="radio" name="cron_mode" value="exact_day_month" onClick = {() => setSelComp("exact_day_month")}/>Каждый X день месяца<br></br>
-            <input type="radio" name="cron_mode" value="custom" onClick = {() => setSelComp("custom")}/>Пользовательская настройка</p>
+            <input type="radio" name="cron_mode" id="each_min" value="each_min" onClick = {() => setSelComp("each_min")}/>Каждые X минут <br></br>
+            <input type="radio" name="cron_mode" id="exact_days_week_in_time" value="exact_days_week_in_time" onClick = {() => setSelComp("exact_days_week_in_time")}/>В выбранный день недели<br></br>
+            <input type="radio" name="cron_mode" id="each_day" value="each_day" onClick = {() => setSelComp("each_day")}/>Каждый день<br></br>
+            <input type="radio" name="cron_mode" id="twice_day" value="twice_day" onClick = {() => setSelComp("twice_day")}/>Дважды в день<br></br>
+            <input type="radio" name="cron_mode" id="exact_day_month" value="exact_day_month" onClick = {() => setSelComp("exact_day_month")}/>Каждый X день месяца<br></br>
+            <input type="radio" name="cron_mode" id="custom" value="custom" onClick = {() => setSelComp("custom")}/>Пользовательская настройка</p>
             </form>
         </div>
         <EachMin        selected = {selComp} 
@@ -150,11 +176,11 @@ function CRON_APP(props) {
         <input //Инпут конечного вывода строки CRON
             id="cron_main"
             type="text"
-            value={cron_arr_set.join(" ")}
+           // value={cron_arr_set.join(" ")}
          />
          <button type="button" onClick={() => save_button()}>SAVE</button> {/*Занесение введённых данных в ОМХ*/}
          <button type="button" onClick={() => test_function()}>TEST</button> {/*Кнопка для тестирования различных моментов (ДЛЯ РЕЛИЗА - УДАЛИТЬ) */}
-    
+         <button type="button" onClick={() => load_button()}>LOAD</button> {/*Кнопка для тестирования различных моментов (ДЛЯ РЕЛИЗА - УДАЛИТЬ) */}
         
     </div> 
    ) 

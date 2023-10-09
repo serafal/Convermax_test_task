@@ -25,6 +25,7 @@ function TwiceDay({selected, onChange, onHourChange}) {
         <form>
         <h1>Задача будет запускаться каждый день, в указанные часы</h1>
          <p>Первый запуск в <input
+          id='twice_day_1'
           min = {0}
           max = {23}
          type="number"
@@ -32,6 +33,7 @@ function TwiceDay({selected, onChange, onHourChange}) {
          onKeyDown = {keyDownDisabled}
           /> часов <br />
          Второй запуск в <input
+          id='twice_day_1'
           min = {0}
           max = {23}
          type="number"
