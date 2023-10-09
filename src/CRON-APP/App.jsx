@@ -99,6 +99,22 @@ function CRON_APP(props) {
                 cron_arr_set[4] = "*"; 
             }
             if (CM === "custom") { //ВЫБРАНА НАСТРОЙКА "ПОЛЬЗОВАТЕЛЬСКАЯ НАСТРОЙКА"
+                let regexp_cron_str = /(?!\d{1,2}|\*|\/|,|-)[^ ]+|(\/\*\d{1,2}\*)/;
+                if (regexp_cron_str.test([min])) {
+                    return alert ("Недопустимое значение минутного символа")
+                }
+                if (regexp_cron_str.test([hour])) {
+                    return alert ("Недопустимое значение часового символа")
+                }
+                if (regexp_cron_str.test([day])) {
+                    return alert ("Недопустимое значение дневного символа")
+                }
+                if (regexp_cron_str.test([month])) {
+                    return alert ("Недопустимое значение месячного символа")
+                }
+                if (regexp_cron_str.test([week])) {
+                    return alert ("Недопустимое значение недельного символа")
+                }
                 cron_arr_set[0] = min;
                 cron_arr_set[1] = hour;
                 cron_arr_set[2] = day;
