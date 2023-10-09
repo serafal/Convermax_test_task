@@ -29,7 +29,7 @@ const keyDownDisabled = (event) => {//Отключаем ручной ввод �
   event.preventDefault();
 }
 
-if (selected === "exact_days_week_in_time") { //Выбор проходит в App.jsx
+if (selected === "exact_day_week") { //Выбор проходит в App.jsx
   return (
     <div>
       <form name='week_checkbox'>
@@ -43,14 +43,14 @@ if (selected === "exact_days_week_in_time") { //Выбор проходит в A
       <input type="checkbox" name = "week_checkbox" value="7" id="exact_day_week_7" onClick={handleWeekChange}/>Воскресенье <br></br>
       <p>В <input type="number"
         name=""
-        id=""
+        id="exact_day_week_hour"
         min = {0}
         max = {23}
         onChange={handleHourChange}
         onKeyDown = {keyDownDisabled}/> часов
       и <input type="number"
         name=""
-        id=""
+        id="exact_day_week_min"
         min = {0}
         max = {59}
         onChange={handleMinChange}

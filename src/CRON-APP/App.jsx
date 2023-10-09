@@ -43,7 +43,7 @@ function CRON_APP(props) {
                 cron_arr_set[3] = "*";
                 cron_arr_set[4] = "*";  
             }
-            if (CM === "exact_days_week_in_time") { //ВЫБРАНА НАСТРОЙКА "В ОПРЕДЕЛЁННОЕ ВРЕМЯ В УКАЗАНЫЕ ДНИ"
+            if (CM === "exact_day_week") { //ВЫБРАНА НАСТРОЙКА "В ОПРЕДЕЛЁННОЕ ВРЕМЯ В УКАЗАНЫЕ ДНИ"
                 if (min === "*" || hour === "*" || week === ("*") ) { //Проверка на не введённое значение
                     return alert ("Пожалуйста, введите желаемое значение")
                 }
@@ -115,27 +115,152 @@ function CRON_APP(props) {
         console.log(cron_input_str)
         let cron_input_arr = cron_input_str.split(" ")
         console.log(cron_input_arr)
-        //Проверка на заполненность строки
-        if (cron_input_arr.length !== 5) {
+        
+        if (cron_input_arr.length !== 5) { //Проверка на заполненность строки
             return alert ("Введённое значение не является CRON-строкой или не поддерживается в данном редакторе")
         }
         //Проверка на наличие неверных символов
+        let regexp_cron_str = /(?!\d{1,2}|\*|\/|,|-)[^ ]+|(\/\*\d{1,2}\*)/;
+        if (regexp_cron_str.test(cron_input_str)) { //Всё, кроме одной, или двух цифр, "*", "/", ",", 
+          return alert ("Недопустимые вводные символы")  
+        }
+        
+        let regexp_double_star = /[*]{2,}/ //Проверка на дублирование
+        for (let i = 0; i < cron_input_arr.length; i++) {
+            const element = cron_input_arr[i];
+            if (element.match(regexp_double_star)) {//Проверка на дублирование
+                return alert ('Недопустимые вводные данные. Проверьте дубликаты символов')
+            }
+        }
+
+        //Возможные варианты:
+
+        //   Каждые X минут: */7 * * * *
+        let each_min_test = /\*\/\d{1,2}/;  
+    if (each_min_test.test(cron_input_arr[0]) && cron_input_arr[1] === "*" && cron_input_arr[2] === "*" && cron_input_arr[3] === "*" && cron_input_arr[4] === "*") {
+        document.getElementById("each_min").checked = true;
+        setSelComp("each_min");
+        const infil_values = () => { //Функция переноса данных в выбранный компонент
+            let min_input = cron_input_arr[0].replace(/^\D+/g, '')
+            if (min_input > 59) {
+                return alert ("Слишком большое значение минутного символа. Он должен быть не больше 59")
+            }
+            document.getElementById('each_min_min').value = min_input
+        }
+        return setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
+        }
+        //   Каждые X минут: */7 * * * *
+    
+        
+        //   В выбранный день недели: 20 6 * * 1,2,4
+        if (!(/[^0-9]/.test(cron_input_arr[0])) && !(/[^0-9]/.test(cron_input_arr[1])) && cron_input_arr[2] === "*" && cron_input_arr[3] === "*" && cron_input_arr[4] !== "*") {
+        let min_input = cron_input_arr[0]
+        let hour_input = cron_input_arr[1]
+        let week_input = cron_input_arr[4].split(",")
+        if (min_input > 59 || hour_input > 23) {
+            return alert ("Слишком большое значение минутного или часового символа. Он должен быть не больше 59 и 23 соответственно")
+        }
+        document.getElementById("exact_day_week").checked = true;
+        setSelComp("exact_day_week");
+        const infil_values = () => { //Функция переноса данных в выбранный компонент
+            document.getElementById('exact_day_week_min').value = min_input
+            document.getElementById('exact_day_week_hour').value = hour_input
+            for (let i = 0; i < week_input.length; i++) {
+                const element = week_input[i]; //week_input[0] = 1
+                document.getElementById("exact_day_week_" + element).checked = true
+            }
+      }
+        return setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
+    }
+    //   В выбранный день недели: 20 6 * * 1,2,4
+
+
+
+        //   Каждый день: 0 12 * * *
+        if (!(/[^0]/.test(cron_input_arr[0])) && !(/[^0-9]/.test(cron_input_arr[1])) && cron_input_arr[2] === "*" && cron_input_arr[3] === "*" && cron_input_arr[4] === "*") {
+            let hour_input = cron_input_arr[1]   
+            if (hour_input > 23) {
+                return alert ("Слишком большое значение часового символа. Он должен быть не больше 23")
+            }
+            document.getElementById("each_day").checked = true;
+            setSelComp("each_day");
+            const infil_values = () => { 
+            document.getElementById('each_day_hour').value = hour_input
+            }
+            return setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
+        }
+        //   Каждый день: 0 12 * * *
+
+
+
+        //   Дважды в день: 0 4,10 * * *
+        if (!(/[^0]/.test(cron_input_arr[0])) && (/[0-9]{1,2},[0-9]{1,2}/.test(cron_input_arr[1])) && cron_input_arr[2] === "*" && cron_input_arr[3] === "*" && cron_input_arr[4] === "*") {
+            let hour_input_arr = cron_input_arr[1].split(',')   //Разбиваем два числа часового символа на массив
+            let hour_input_1 = hour_input_arr[0];
+            let hour_input_2 = hour_input_arr[1];
+            if (hour_input_1 > 23 || hour_input_2 > 23) {
+                return alert ("Слишком большое значение одного или двух часовых символов. Он должен быть не больше 23")
+            }
+            if (hour_input_1 > hour_input_2) {
+                return alert ("Недопустимый ввод. Первый запуск не может идти после второго")
+            }
+            if (hour_input_1 === hour_input_2) {
+                return alert ("Недопустимый ввод. Первый и второй запуски не могут быть даны одновременно")
+            }
+            document.getElementById("twice_day").checked = true;
+            setSelComp("twice_day");
+            const infil_values = () => {
+            document.getElementById('twice_day_1').value = hour_input_1
+            document.getElementById('twice_day_2').value = hour_input_2
+            }
+            return setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
+        }
+        //   Дважды в день: 0 4,10 * * *
+
+
+
+        //   Каждый X день месяца: 0 0 28-30 * *
+        if ((/[0]/.test(cron_input_arr[0])) && (/[0]/.test(cron_input_arr[1])) && (!(/[^0-9]/.test(cron_input_arr[2])) || (/[0-9]{1,2}-[0-9]{1,2}/.test(cron_input_arr[2]))) && cron_input_arr[3] === "*" && cron_input_arr[4] === "*") {
+          if (!(/[^0-9]/.test(cron_input_arr[2]))) { //Если символ дня одиночный...
+            let day_input = cron_input_arr[2]
+            if (day_input > 31) {
+               return alert ("Слишком большое значение дневного символа. Он не может быть больше 31")
+            }   
+            document.getElementById("exact_day_month").checked = true;
+            setSelComp("exact_day_month");
+            const infil_values = () => { 
+            document.getElementById('exact_day_month_day').value = day_input
+            }
+            return setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных  
+          }
+          if ((/[0-9]{1,2}-[0-9]{1,2}/.test(cron_input_arr[2]))) {//Если символ дня двойной...
+            let day_input = cron_input_arr[2].split("-")
+            if (day_input[1] > 31) {
+                return alert ("Слишком большое значение дневного символа. Он не может быть больше 31")   
+            }
+            document.getElementById("exact_day_month").checked = true;
+            setSelComp("exact_day_month");
+            const infil_values = () => { 
+            document.getElementById('exact_day_month_day').value = day_input[1]
+            }
+            return setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
+          }
+        }
+        //   Каждый X день месяца: 0 0 23 * *
 
         //Разобъём пользовательский ввод
-        document.getElementById("custom").checked = true;
-        setSelComp("custom");
-        const infil_values = () => { //Функция переноса данных в выбранный компонент
-            document.getElementById('custom_min').value = cron_input_arr[0]
-            document.getElementById('custom_hour').value = cron_input_arr[1]
-            document.getElementById('custom_day').value = cron_input_arr[2]
-            document.getElementById('custom_month').value = cron_input_arr[3]
-            document.getElementById('custom_week').value = cron_input_arr[4]
-        }
+        else {
+            document.getElementById("custom").checked = true;
+            setSelComp("custom");
+            const infil_values = () => { //Функция переноса данных в выбранный компонент
+                document.getElementById('custom_min').value = cron_input_arr[0]
+                document.getElementById('custom_hour').value = cron_input_arr[1]
+                document.getElementById('custom_day').value = cron_input_arr[2]
+                document.getElementById('custom_month').value = cron_input_arr[3]
+                document.getElementById('custom_week').value = cron_input_arr[4]
+            }
         setTimeout(infil_values, 50) //задержка для того, чтобы React успел отрисовать компонент перед внесением в него данных
-    }
-
-    const test_function = () => { //ТЕСТ-функция (для релиза - УДАЛИТЬ
-        console.log(document.forms.cron_mode.cron_mode.value)   
+        }
     }
 
    return (
@@ -147,7 +272,7 @@ function CRON_APP(props) {
             <form name="cron_mode">
             <p>
             <input type="radio" name="cron_mode" id="each_min" value="each_min" onClick = {() => setSelComp("each_min")}/>Каждые X минут <br></br>
-            <input type="radio" name="cron_mode" id="exact_days_week_in_time" value="exact_days_week_in_time" onClick = {() => setSelComp("exact_days_week_in_time")}/>В выбранный день недели<br></br>
+            <input type="radio" name="cron_mode" id="exact_day_week" value="exact_day_week" onClick = {() => setSelComp("exact_day_week")}/>В выбранный день недели<br></br>
             <input type="radio" name="cron_mode" id="each_day" value="each_day" onClick = {() => setSelComp("each_day")}/>Каждый день<br></br>
             <input type="radio" name="cron_mode" id="twice_day" value="twice_day" onClick = {() => setSelComp("twice_day")}/>Дважды в день<br></br>
             <input type="radio" name="cron_mode" id="exact_day_month" value="exact_day_month" onClick = {() => setSelComp("exact_day_month")}/>Каждый X день месяца<br></br>
@@ -179,8 +304,7 @@ function CRON_APP(props) {
            // value={cron_arr_set.join(" ")}
          />
          <button type="button" onClick={() => save_button()}>SAVE</button> {/*Занесение введённых данных в ОМХ*/}
-         <button type="button" onClick={() => test_function()}>TEST</button> {/*Кнопка для тестирования различных моментов (ДЛЯ РЕЛИЗА - УДАЛИТЬ) */}
-         <button type="button" onClick={() => load_button()}>LOAD</button> {/*Кнопка для тестирования различных моментов (ДЛЯ РЕЛИЗА - УДАЛИТЬ) */}
+         <button type="button" onClick={() => load_button()}>LOAD</button> {/*Кнопка выгрузки данных из строки в редактор */}
         
     </div> 
    ) 

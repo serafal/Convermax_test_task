@@ -33,7 +33,7 @@ function TwiceDay({selected, onChange, onHourChange}) {
          onKeyDown = {keyDownDisabled}
           /> часов <br />
          Второй запуск в <input
-          id='twice_day_1'
+          id='twice_day_2'
           min = {0}
           max = {23}
          type="number"
